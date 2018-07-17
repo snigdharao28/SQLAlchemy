@@ -16,13 +16,20 @@ class StoreModel(db.Model):
 	
 
 	def json(self):
-		return {'name': self.name, 'items': [item.json() for item in self.items.all()]}
+		return {'id': self.id,
+				'name': self.name,
+				'items': [item.json() for item in self.items.all()]
+		}
 
 	@classmethod
 	def find_by_name(cls, name):
 		return cls.query.filter_by(name=name).first()		#	SELECT * FROM items WHERE name = name LIMIT 1
 
+	@classmethod
+	def find_all(cls):
+		return cls.query.all()
 
+	
 	def save_to_db(self):
 		db.session.add(self)
 		db.session.commit()
