@@ -26,6 +26,17 @@ def create_tables():
 jwt = JWTManager(app)
 
 # jwt = JWT(app, authenticate, identity)  # /auth
+"""
+`claims` are data we choose to attach to each jwt payload
+and for each jwt protected endpoint, we can retrieve these claims via `get_jwt_claims()`
+one possible use case for claims are access level control, which is shown below.
+"""
+
+@jwt.user_claims_loader
+def add_claims_to_jwt(identity):  
+    if identity == 1:   
+        return {'is_admin': True}
+    return {'is_admin': False}
 
 
 api.add_resource(Store, '/store/<string:name>')
